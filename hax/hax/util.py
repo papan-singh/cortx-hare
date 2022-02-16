@@ -1494,11 +1494,12 @@ class ConsulUtil:
 
     @uses_consul_cache
     def get_process_status_local(self,
-                                 proc_fid: Fid,
+                                 fid: Fid,
                                  proc_node=None,
                                  kv_cache=None) -> MotrConsulProcInfo:
+        proc_base_fid = self.get_process_base_fid(fid)
         this_node = self.get_local_nodename()
-        key = f'{this_node}/processes/{proc_fid}'
+        key = f'{this_node}/processes/{proc_base_fid}'
         status = self.kv.kv_get(key, kv_cache=kv_cache)
         if status:
             val = json.loads(status['Value'])
